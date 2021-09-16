@@ -1,103 +1,65 @@
-const config = require("../config/auth.config")
+//controller for authentication has 2 main functions :
+//register creates new User in database, and
+//signin: find username of request in db if exists, compare password using bcrypt, generate token, return user info & access token
+
+const config = require("../config/auth.config");
 const model = require("../models");
 
 const { User } = model;
 
 var jwt = require("jsonwebtoken");
-var bcrypt = require("bcryptjs");
+var bcrypt = require("bcrypt");
 
-async function register(req, res) {
-    // const {email, password, name} = req.body;
-    try {
-        const user = await User.findOne({where: { email: req.body.email }});
-        if(user) {
-            return res.status(422)
-            .send({message: "User with that email already exists"});
-        }
-        await User.create({
-            username: req.body.name,
-            email: req.body.email,
-            password: bcrypt.hashSync(req.body.password, 8)
+exports.register = (req, res) => {
+    //Save User to database
+    User.create({
+        name: req.body.name,
+        email: req.body.email,
+        password: bcrypt.hashSync(req.body.password, 8)
+    })
+        .then(() => {
+            res.send({ message: "User created successfully" })
+        })
+        .catch(err => {
+            res.status(500).send({ message: err.message });
         });
-        return res.status(201).send({message: "Account created successfully"});
-    } catch(e) {
-        console.log(e);
-        return res.status(500)
-        .send({ message: "Could not perform operation at this time. Try again later."})
-    }
-}
+};
 
+exports.signin = (req, res) => {
+    User.findOne({
+        where: {
+            name: req.body.name
+        }
+    })
+        .then(user => {
+            if (!user) {
+                return res.status(404).send({ message: "User not found" });
+            }
 
-module.exports.register = register;
+            var passwordIsValid = bcrypt.compareSync(
+                req.body.password,
+                user.password
+            );
 
+            if (!passwordIsValid) {
+                return res.status(401).send({
+                    accessToken: null,
+                    message: "Invalid password"
+                });
+            }
 
-//how to export multiple async functions? or how to deal with async?
-//need to include signin function using jwt & config
-// exports.signin = (req, res) => {
-//     User.findOne({
-//       where: {
-//         username: req.body.username
-//       }
-//     })
-//       .then(user => {
-//         if (!user) {
-//           return res.status(404).send({ message: "User Not found." });
-//         }
-  
-//         var passwordIsValid = bcrypt.compareSync(
-//           req.body.password,
-//           user.password
-//         );
-  
-//         if (!passwordIsValid) {
-//           return res.status(401).send({
-//             accessToken: null,
-//             message: "Invalid Password!"
-//           });
-//         }
-  
-//         var token = jwt.sign({ id: user.id }, config.secret, {
-//           expiresIn: 86400 // 24 hours
-//         });
+            var token = jwt.sign({ id: user.id }, config.secret, {
+                expiresIn: 86400 //24 hours
+            })
 
-//       })
-//       .catch(err => {
-//         res.status(500).send({ message: err.message });
-//       });
-//   };
-
-//possible also need auth middleware for token auth
-//auth middleware -- USED IN USER ROUTE
-// const jwt = require("jsonwebtoken");
-// const config = require("../config/auth.config.js");
-// const db = require("../models");
-// const User = db.user;
-
-// verifyToken = (req, res, next) => {
-//   let token = req.headers["x-access-token"];
-
-//   if (!token) {
-//     return res.status(403).send({
-//       message: "No token provided!"
-//     });
-//   }
-
-//   jwt.verify(token, config.secret, (err, decoded) => {
-//     if (err) {
-//       return res.status(401).send({
-//         message: "Unauthorized!"
-//       });
-//     }
-//     req.userId = decoded.id;
-//     next();
-//   });
-// };
-
-// const authJwt = {
-//   verifyToken: verifyToken
-// };
-// module.exports = authJwt;
-
-
-
-// Role.findAll({where: {name: {[Op.or]: req.body.roles}}})
+            res.status(200).send({
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                accessToken: token
+            });
+        })
+        .catch(err => {
+            res.status(500).send({ message: err.message });
+        });
+};

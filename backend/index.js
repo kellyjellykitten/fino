@@ -15,7 +15,11 @@ app.use(express.urlencoded({ extended: true }));
 app.get('*', (req, res) => res.status(200).send({
     message: 'Hello World!',
 }));
-  
+ 
+//routes
+require("./src/routes/auth.routes")(app);
+require("./src/routes/auth.routes")(app);
+
 const port = 5000;
   
 app.listen(port, () => {
