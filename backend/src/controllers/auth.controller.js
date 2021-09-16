@@ -26,12 +26,14 @@ exports.register = (req, res) => {
 };
 
 exports.signin = (req, res) => {
+    console.log("receive request", req.body)
     User.findOne({
         where: {
             name: req.body.name
         }
     })
         .then(user => {
+            console.log("found user", user)
             if (!user) {
                 return res.status(404).send({ message: "User not found" });
             }

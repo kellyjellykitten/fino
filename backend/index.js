@@ -12,9 +12,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Create a catch-all route for testing the installation.
-app.get('*', (req, res) => res.status(200).send({
-    message: 'Hello World!',
-}));
+// app.get('http://localhost:5000/*', (req, res) => res.status(200).send({
+//     message: 'Hello World!',
+// }));
  
 //routes
 require("./src/routes/auth.routes")(app);
