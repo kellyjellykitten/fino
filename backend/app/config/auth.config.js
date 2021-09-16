@@ -1,3 +1,3 @@
 module.exports = {
-    secret: "eclipse-secret-key"
+    secret: "bezkoder-secret-key"
 };
