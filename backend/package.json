@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "make-model": "npx sequelize-cli model:generate --name User --attributes firstName:string,email:string",
+    "migrate": "npx sequelize-cli db:migrate",
     "dev": "nodemon index.js"
   },
   "author": "",
