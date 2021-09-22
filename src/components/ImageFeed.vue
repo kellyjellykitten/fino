@@ -36,6 +36,13 @@ export default {
     getImg(filename) {
         return require(`../assets/images/${filename}`)
     },
+    async getImage() {
+        const res = await fetch('/api/image')
+        const data = await res.json()
+        console.log('hhhhh', data)
+        return data
+    }
   },
 };
 </script>
+

@@ -34,17 +34,17 @@ export default {
         this.captions = [
                 {
                     id: 1,
-                    username: 'eclipseiscute420',
+                    name: 'eclipseiscute420',
                     text: 'Eclipse has finally taken a stand against her worst enemy.'
                 },
                 {
                     id: 2,
-                    username: 'xX_thebigboy_Xx',
+                    name: 'xX_thebigboy_Xx',
                     text: 'Enter edgy Aleppo comment here.'
                 },
                 {
                     id: 3,
-                    username: 'catmomma69',
+                    name: 'catmomma69',
                     text: 'Honestly, an email would have sufficed.'
                 }
             ]

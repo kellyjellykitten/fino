@@ -6,15 +6,15 @@
   </div>
   <div class="login-box">
     <h4 class="text-center mb-5">Log in to add your own captions!</h4>
-    <form class="form-group">
+    <form class="form-group" @submit.prevent="loginUser">
       <div class="input-field">
-        <label for="username">Username</label>
-        <input id="username" type="text" class="form-control" placeholder="Username" required autofocus>
+        <label for="name">Username</label>
+        <input id="name" type="text" class="form-control" placeholder="Username" v-model="login.name" required autofocus>
       </div>
       <div class="input-field">
         <br/>
         <label for="password">Password</label>
-        <input id="password" type="password" class="form-control" placeholder="Password" required>
+        <input id="password" type="password" class="form-control" placeholder="Password" v-model="login.password" required>
       </div>
       <div class="checkbox mb-3">
         <br/>
@@ -36,7 +36,30 @@
 
 <script>
 export default {
-    name: 'Login'
+    name: 'Login',
+    data() {
+      return {
+        login: {
+          name: "",
+          password: ""
+        }
+      }
+    },
+    methods: {
+      async loginUser() {
+        try {
+          let response = await this.$http.post("/api/auth/signin", this.login)
+          console.log(response, "-----")
+          let token = response.data.data.token
+          //save generated JWT to local storage
+          localStorage.setItem("user", token)
+          
+          this.$router.push("/")
+        } catch (error) {
+          console.error(error)
+        }
+      }
+    }
 }
 </script>
 

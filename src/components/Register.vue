@@ -7,20 +7,20 @@
 
   <div class="login-box">
     <h4 class="text-center mb-5">Create an account to add your own captions!</h4>
-    <form class="form-group">
+    <form class="form-group" @submit.prevent="registerUser">
       <div class="input-field">
-        <label for="username">Username</label>
-        <input id="username" type="text" class="form-control" placeholder="Username" required autofocus>
+        <label for="name">Username</label>
+        <input id="name" type="text" class="form-control" placeholder="Username" v-model="register.name" required autofocus>
       </div>
       <div class="input-field">
         <br/>
         <label for="email">Email address</label>
-        <input id="email" type="text" class="form-control" placeholder="Email address" required>
+        <input id="email" type="text" class="form-control" placeholder="Email address" v-model="register.email" required>
       </div>
       <div class="input-field">
         <br/>
         <label for="password">Password</label>
-        <input id="password" type="password" class="form-control" placeholder="Password" required>
+        <input id="password" type="password" class="form-control" placeholder="Password" v-model="register.password" required>
       </div>
       <div class="center-align">
         <br/>
@@ -35,7 +35,32 @@
 
 <script>
 export default {
-    name: 'Register'
+    name: 'Register',
+    data() {
+      return {
+        register: {
+          name: "",
+          email: "",
+          password: ""
+        }
+      }
+    },
+    methods: {
+      async registerUser() {
+        try {
+          let response = await this.$http.post("/api/auth/register", this.register);
+          console.log(response);
+          if (response) {
+            this.$router.push("/login")
+            console("Success", "Registration successful")
+          } else {
+            console.log("Error", "Something went wrong")
+          }
+        } catch (error) {
+          console.error(error)
+        }
+      }
+    }
 }
 </script>
 
