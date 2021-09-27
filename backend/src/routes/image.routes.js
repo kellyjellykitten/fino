@@ -1,13 +1,17 @@
 const controller = require("../controllers/image.controller");
 
 module.exports = function(app) {
-  app.use(function(req, res, next) {
-    res.header(
+
+  var setHeaders = function(req, res, next) {
+    res.setHeader(
       "Access-Control-Allow-Headers",
       "x-access-token, Origin, Content-Type, Accept"
-    );
-    next();
-  });
+    )
+    // res.end()
+    next()
+  }
+
+  app.use(setHeaders);
 
   app.get("/api/image", controller.getImage);
 

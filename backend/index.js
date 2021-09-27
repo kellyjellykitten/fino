@@ -19,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 //routes
 require("./src/routes/auth.routes")(app);
 require("./src/routes/user.routes")(app);
+require("./src/routes/image.routes")(app);
 
 const port = 5000;
   

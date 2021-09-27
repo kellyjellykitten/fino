@@ -5,14 +5,25 @@
 
 
 exports.getImage = (req, res, next) => {
-    // let file = req
-    let file = require("../assets/images/gettyimages-4444-1024x1024.jpg")
-    res.sendFile(file, function (err) {
+    var path = require('path')
+
+    var options = {
+        root: path.join(__dirname, '../assets/images/'),
+        dotfiles: 'deny',
+        headers: {
+          'x-timestamp': Date.now(),
+          'x-sent': true
+        }
+    }
+    console.log(options.root)
+    let file = "gettyimages-4444-1024x1024.jpg"
+    console.log(file)
+    res.sendFile(file, options, function (err) {
         if (err) {
             next(err)
         } else {
             console.log("Sent:", file)
-            res.status(200).send("image image image")
+            // res.status(200).send("image image image")
         }
     })  
 }
