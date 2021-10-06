@@ -30,6 +30,9 @@ export default {
             captions: []
         }
     },
+    // props: {
+    //     image: Object
+    // },
     created() {
         this.captions = [
                 {

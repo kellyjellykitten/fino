@@ -13,7 +13,8 @@ module.exports = function(app) {
 
   app.use(setHeaders);
 
-  app.get("/api/image", controller.getImage);
-  // app.get("/api/image/{id}", controller.getImageById);
+  app.get("/api/image", controller.getSingleImage);
+  app.get("/api/images", controller.getImages);
+  app.get("/api/image/:id", controller.getImage);
 
 };

@@ -4,7 +4,7 @@
             <div class="row">
                 <div v-for="image in images" :key="image.id" class="col-lg-4">
                     <div class="card" style="width: 18rem;">
-                        <img :src="link" class="card-img-top">
+                        <img :src="images[image.id].url" class="card-img-top">
                         <div class="card-body">
                             <h5 class="card-title">
                                 {{ image.title }}
@@ -23,30 +23,40 @@
 </template>
 
 <script>
-import images from '@/images.json';
+// import images from '@/images.json';
 
 export default {
   name: 'ImageFeed',
   data() {
     return {
-      images,
-      link: ''
+      images: []
     };
   },
-  created() {
-      this.getImage()
+  watch: {
+      images() {
+          console.log('images', this.images)
+          this.images.forEach(async image => {
+                let imageRes = await this.getImage(image.id)
+                console.log('after get request', imageRes)
+                let reader = new FileReader();
+                reader.onload = () => {
+                    console.log('read')
+                    this.images[image.id].url = reader.result
+                }
+                reader.readAsDataURL(imageRes); 
+          })
+      }
   },
   methods: {
-    getImg(filename) {
-        return require(`../assets/images/${filename}`)
-    },
-    async getImage() {
+    // getImg(filename) {
+    //     return require(`../assets/images/${filename}`)
+    // },
+    async getImage(id) {
         // const res = await fetch('/api/image')
         // const data = await res.json()
         // console.log('hhhhh', data)
         // return data
-
-        const res = await fetch('http://localhost:5000/api/image', {
+        const res = await fetch(`http://localhost:5000/api/image/${id}`, {
                 method: 'GET',
                 headers: {
                 'Content-type': 'image/jpeg',
@@ -54,13 +64,28 @@ export default {
                 mode: 'cors'
             })
         const data = await res.blob()
-        let self = this
-        let reader = new FileReader();
-        reader.onload = () => {
-            self.link = reader.result
-        }
-        reader.readAsDataURL(data); 
+        console.log('data', data)
+        return data
+    },
+    async getImages() {
+        // const res = await fetch('/api/image')
+        // const data = await res.json()
+        // console.log('hhhhh', data)
+        // return data
+        const res = await fetch(`http://localhost:5000/api/images`, {
+                method: 'GET',
+                headers: {
+                'Content-type': 'application/json',
+                },
+                mode: 'cors'
+            })
+        const data = await res.json()
+        console.log(data)
+        return data
     }
+  },
+  async created() {
+      this.images = await this.getImages()
   },
 };
 </script>
