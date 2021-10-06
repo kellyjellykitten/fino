@@ -3,9 +3,9 @@
         <div class="container">
             <div class="py-5 text-center">
                 <h2>
-                    {{ image.title }}
+                    {{ singleImage.title }}
                 </h2>
-                <img :src="imageUrl(image.filename)" class="img-fluid">
+                <img :src="singleImage.url" class="img-fluid">
             </div>
             <Captions :captions="captions" />
             <CaptionForm  @add-caption="addCaption" />
@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import images from '@/images.json'
 import Captions from './Captions.vue'
 import CaptionForm from './CaptionForm.vue'
 
@@ -24,16 +23,18 @@ export default {
         Captions,
         CaptionForm
     },
+    props: {
+        image: String
+    },
     data() {
         return {
-            images,
+            singleImage: {},
             captions: []
         }
     },
-    // props: {
-    //     image: Object
-    // },
     created() {
+        console.log('image prp', JSON.parse(this.image))
+        this.singleImage = JSON.parse(this.image)
         this.captions = [
                 {
                     id: 1,
@@ -52,17 +53,7 @@ export default {
                 }
             ]
     },
-    computed: {
-        image() {
-            return this.images.find((image) => {
-                return image.id === Number(this.$route.params.id)
-            });
-        },
-    },
     methods: {
-        imageUrl(filename) {
-            return require(`../assets/images/${filename}`)
-        },
         async makeBackendRequest(caption){
             const res = await fetch('http://localhost:3000/', {
                 method: 'POST',

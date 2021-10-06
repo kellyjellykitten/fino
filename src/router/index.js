@@ -29,7 +29,9 @@ const routes = [
   {
     path: '/image/:id',
     name: 'image',
-    component: Image
+    component: Image,
+    props: route => ({
+      image: route.params.image})
   }
 ]
 

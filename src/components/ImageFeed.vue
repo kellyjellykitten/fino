@@ -11,7 +11,7 @@
                             </h5>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <router-link :to="`/image/${image.id}`" class="btn btn-sm btn-outline-secondary">View</router-link>
+                                    <router-link :to="{name: 'image', params: {image: JSON.stringify(this.images[image.id]), id: image.id}}" class="btn btn-sm btn-outline-secondary">View</router-link>
                                 </div>
                             </div>
                         </div>
@@ -23,7 +23,6 @@
 </template>
 
 <script>
-// import images from '@/images.json';
 
 export default {
   name: 'ImageFeed',
@@ -34,13 +33,12 @@ export default {
   },
   watch: {
       images() {
-          console.log('images', this.images)
           this.images.forEach(async image => {
                 let imageRes = await this.getImage(image.id)
-                console.log('after get request', imageRes)
+                
                 let reader = new FileReader();
                 reader.onload = () => {
-                    console.log('read')
+                    // console.log('read')
                     this.images[image.id].url = reader.result
                 }
                 reader.readAsDataURL(imageRes); 
@@ -48,14 +46,7 @@ export default {
       }
   },
   methods: {
-    // getImg(filename) {
-    //     return require(`../assets/images/${filename}`)
-    // },
     async getImage(id) {
-        // const res = await fetch('/api/image')
-        // const data = await res.json()
-        // console.log('hhhhh', data)
-        // return data
         const res = await fetch(`http://localhost:5000/api/image/${id}`, {
                 method: 'GET',
                 headers: {
@@ -64,14 +55,9 @@ export default {
                 mode: 'cors'
             })
         const data = await res.blob()
-        console.log('data', data)
         return data
     },
     async getImages() {
-        // const res = await fetch('/api/image')
-        // const data = await res.json()
-        // console.log('hhhhh', data)
-        // return data
         const res = await fetch(`http://localhost:5000/api/images`, {
                 method: 'GET',
                 headers: {
@@ -80,7 +66,6 @@ export default {
                 mode: 'cors'
             })
         const data = await res.json()
-        console.log(data)
         return data
     }
   },
