@@ -12,12 +12,27 @@ import Caption from './Caption.vue'
 
 export default {
     name: 'Captions',
-    props: {
-        captions: Array,
-    },
     components: {
         Caption
-    }
+    },
+    methods: {
+        async fetchCaptions() {
+            const res = await fetch(`http://localhost:5000/api/captions`)
+            console.log('hi', res)
+            const data = await res.json()
+            console.log('data:', data)
+            return data
+        },
+        async fetchCaption(id) {
+            const res = await fetch(`http://localhost:5000/api/captions/${id}`)
+            const data = await res.json()
+            return data
+        }   
+    },
+    async created() {
+        this.captions = await this.fetchCaptions()
+        console.log('captions:')
+    },
 }
 </script>
 

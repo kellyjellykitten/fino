@@ -10,9 +10,9 @@
 <script>
 export default {
   name: 'Caption',
-  props: {
-    caption: Object
-  },
+  // props: {
+  //   caption: Object
+  // },
 }
 </script>
 
