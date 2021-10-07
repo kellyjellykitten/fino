@@ -25,7 +25,6 @@ export default {
                 return
             }
             const newCaption = {
-                id: Math.floor(Math.random() * 100000),
                 text: this.text
             }
             this.$emit('add-caption', newCaption)

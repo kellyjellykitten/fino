@@ -12,11 +12,11 @@ import Caption from './Caption.vue'
 
 export default {
     name: 'Captions',
+    props: {
+        captions: Array,
+    },
     components: {
         Caption
-    },
-    props: {
-        captions: Array
     }
 }
 </script>
