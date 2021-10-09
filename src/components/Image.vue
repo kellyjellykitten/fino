@@ -8,7 +8,7 @@
                 <img :src="singleImage.url" class="img-fluid">
             </div>
             <Captions :captions="captions" />
-            <CaptionForm  @add-caption="addCaption" />
+            <CaptionForm  :image="singleImage" @caption-added="this.refreshCaptions(singleImage.id)" />
         </div>
     </div>
 </template>
@@ -24,45 +24,49 @@ export default {
         CaptionForm
     },
     props: {
-        image: String
+        image: String,
     },
     data() {
         return {
             singleImage: {},
+            captions: []
         }
     },
-    // methods: {
-    //     // addCaption(caption) {
-    //     //     this.captions = [...this.captions, caption]
-    //     //     this.makeBackendRequest(caption)
-    //     // }
-    //     async addCaption(caption) {
-    //         const res = await fetch(`http://localhost:5000/api/addCaption`, {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-type': 'application/json',
-    //             },
-    //             mode: 'cors',
-    //             body: JSON.stringify(caption),
-    //         })
-    //         const data = await res.json()
-    //         this.captions = [...this.captions, data]
-    //     },
-    //     async fetchCaptions() {
-    //         const res = await fetch(`http://localhost:5000/api/captions`)
-    //         console.log('hi', res)
-    //         const data = await res.json()
-    //         return data
-    //     },
-    //     async fetchCaption(id) {
-    //         const res = await fetch(`http://localhost:5000/api/captions/${id}`)
-    //         const data = await res.json()
-    //         return data
-    //     }   
-    // },
-    created() {
-        console.log('image prp', JSON.parse(this.image))
+    methods: {
+        async addCaption(caption) {
+            const res = await fetch(`http://localhost:5000/api/addCaption`, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                mode: 'cors',
+                body: JSON.stringify(caption),
+            })
+            await res.json()
+            .then((data) => {
+                console.log(data)
+            })
+        },
+        async fetchCaptions() {
+            const res = await fetch(`http://localhost:5000/api/captions`)
+            const data = await res.json()
+            return data
+        },
+        async fetchCaption(id) {
+            console.log('fetching caption with id', id)
+            const res = await fetch(`http://localhost:5000/api/captions/${id}`)
+            const data = await res.json()
+            return data
+        },
+        async refreshCaptions(id) {
+            this.captions = await this.fetchCaption(id)
+        }   
+    },
+    async created() {
+        // console.log('image prp', JSON.parse(this.image))
         this.singleImage = JSON.parse(this.image)
+        this.captions = await this.fetchCaption(this.singleImage.id)
+        console.log('captions:', this.captions)
     },
 }
 </script>

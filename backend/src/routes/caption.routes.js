@@ -14,6 +14,6 @@ module.exports = function(app) {
 
     app.get("/api/captions", controller.getCaptions);
     
-    app.get("/api/captions/:id", controller.getCaption);
+    app.get("/api/captions/:id", controller.getCaptionsForImage);
 
 };

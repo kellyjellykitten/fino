@@ -24,40 +24,42 @@
 <script>
 export default {
     name: 'CaptionForm',
+    props: {
+        image: {}
+    },
     data() {
         return {
             caption: {
                 id: null,
                 body: '',
+                image_id: this.image.id,
                 published: false
             },
             submitted: false
         }
     },
     methods: {
-        // onSubmit(e) {
-        //     e.preventDefault()
-        //     if (!this.text) {
-        //         alert('Please add a caption')
-        //         return
-        //     }
-        //     const newCaption = {
-        //         text: this.text
-        //     }
-        //     this.$emit('add-caption', newCaption)
-        //     this.text = ''
-        // },
-       addCaption(e) {
+       async addCaption(e) {
            e.preventDefault()
            const requestOptions = {
                method: 'POST',
                headers: { 'Content-type': 'application/json'},
                mode: 'cors',
                body: JSON.stringify(this.caption)
+            //    image_id: JSON.stringify(this.image.id)
            }
-           fetch('http://localhost:5000/api/addCaption', requestOptions)
-            .then(response => response.json())
-            .then(data => (this.caption.id = data.id))
+           const res = await fetch('http://localhost:5000/api/addCaption', requestOptions)
+            
+            // .then(response => {
+            //         console.log('response', response.json())
+            //     })
+            // .then(data => (this.caption.id = data.id))
+            console.log('res', res)
+            console.log('json', res.json())
+            console.log('condition', res.status == 200)
+            if (res.status == 200) {
+                this.$emit('captionAdded')
+            }
             this.caption = {}
         }
     }
