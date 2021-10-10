@@ -6,7 +6,7 @@
   </div>
   <div class="login-box">
     <h4 class="text-center mb-5">Log in to add your own captions!</h4>
-    <form class="form-group" @submit.prevent="loginUser">
+    <form class="form-group" @submit="handleLogin">
       <div class="input-field">
         <label for="name">Username</label>
         <input id="name" type="text" class="form-control" placeholder="Username" v-model="login.name" required autofocus>
@@ -35,32 +35,38 @@
 
 
 <script>
+
 export default {
-    name: 'Login',
-    data() {
-      return {
-        login: {
-          name: "",
-          password: ""
-        }
-      }
-    },
-    methods: {
-      async loginUser() {
-        try {
-          let response = await this.$http.post("/api/auth/signin", this.login)
-          console.log(response, "-----")
-          let token = response.data.data.token
-          //save generated JWT to local storage
-          localStorage.setItem("user", token)
-          
-          this.$router.push("/")
-        } catch (error) {
-          console.error(error)
-        }
+  name: 'Login',
+  data() {
+    return {
+      login: {
+        name: '',
+        password: ''
       }
     }
+  },
+  methods: {
+    async handleLogin(e) {
+      e.preventDefault()
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-type': 'application/json'},
+        mode: 'cors',
+        body: JSON.stringify(this.login)
+      }
+      const res = await fetch(`http://localhost:5000/api/auth/signin`, requestOptions)
+      console.log('res', res)
+      console.log('json', res.json())
+      console.log('condition', res.status == 200)
+      if (res.status == 200) {
+        console.log('Logged in successfully')
+        this.$router.push("/")
+      }
+    }
+  }
 }
+
 </script>
 
 
@@ -81,3 +87,5 @@ export default {
 <!-- <style>
   body {background-color: #e9ecef;}
 </style> -->
+
+

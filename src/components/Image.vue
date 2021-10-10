@@ -63,10 +63,8 @@ export default {
         }   
     },
     async created() {
-        // console.log('image prp', JSON.parse(this.image))
         this.singleImage = JSON.parse(this.image)
         this.captions = await this.fetchCaption(this.singleImage.id)
-        console.log('captions:', this.captions)
     },
 }
 </script>

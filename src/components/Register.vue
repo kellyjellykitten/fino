@@ -7,7 +7,7 @@
 
   <div class="login-box">
     <h4 class="text-center mb-5">Create an account to add your own captions!</h4>
-    <form class="form-group" @submit.prevent="registerUser">
+    <form class="form-group" @submit="registerUser">
       <div class="input-field">
         <label for="name">Username</label>
         <input id="name" type="text" class="form-control" placeholder="Username" v-model="register.name" required autofocus>
@@ -39,28 +39,31 @@ export default {
     data() {
       return {
         register: {
-          name: "",
-          email: "",
-          password: ""
+          name: '',
+          email: '',
+          password: ''
         }
       }
     },
     methods: {
-      async registerUser() {
-        try {
-          let response = await this.$http.post("/api/auth/register", this.register);
-          console.log(response);
-          if (response) {
-            this.$router.push("/login")
-            console("Success", "Registration successful")
-          } else {
-            console.log("Error", "Something went wrong")
-          }
-        } catch (error) {
-          console.error(error)
-        }
+      async registerUser(e) {
+      e.preventDefault()
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-type': 'application/json'},
+        mode: 'cors',
+        body: JSON.stringify(this.register)
+      }
+      const res = await fetch(`http://localhost:5000/api/auth/register`, requestOptions)
+      console.log('res', res)
+      console.log('json', res.json())
+      console.log('condition', res.status == 200)
+      if (res.status == 200) {
+        console.log('User created successfully')
+        this.$router.push("/")
       }
     }
+  }
 }
 </script>
 
