@@ -10,11 +10,13 @@
       <div class="input-field">
         <label for="name">Username</label>
         <input id="name" type="text" class="form-control" placeholder="Username" v-model="login.name" required autofocus>
+        <p class="alert alert-danger" v-if="userError">{{ userError }}</p>
       </div>
       <div class="input-field">
         <br/>
         <label for="password">Password</label>
         <input id="password" type="password" class="form-control" placeholder="Password" v-model="login.password" required>
+        <p class="alert alert-danger" v-if="passwordError">{{ passwordError }}</p>
       </div>
       <div class="checkbox mb-3">
         <br/>
@@ -43,7 +45,9 @@ export default {
       login: {
         name: '',
         password: ''
-      }
+      },
+      userError: null,
+      passwordError: null
     }
   },
   methods: {
@@ -56,13 +60,27 @@ export default {
         body: JSON.stringify(this.login)
       }
       const res = await fetch(`http://localhost:5000/api/auth/signin`, requestOptions)
-      console.log('res', res)
-      console.log('json', res.json())
-      console.log('condition', res.status == 200)
-      if (res.status == 200) {
-        console.log('Logged in successfully')
-        this.$router.push("/")
-      }
+      .then(res => res.json().then(data => ({
+        data: data,
+        status: res.status
+      })).then(res => {
+        console.log('res then', res.status, res.message)
+        console.log('res', res)
+        console.log('condition', res.status == 200)
+        if (res.status == 200) {
+          console.log('Logged in successfully')
+          this.$router.push("/")
+        } else if (res.status == 404) {
+          console.log('Unauthorized', res)
+          console.log('msg', JSON.stringify(res.data.message))
+          this.userError = JSON.stringify(res.data.message)
+        } else if (res.status == 401) {
+          console.log('Password unauthorized', res)
+          console.log('pw msg', JSON.stringify(res.data.message))
+          this.passwordError = JSON.stringify(res.data.message)
+        }
+      }))
+       console.log('res', res)
     }
   }
 }

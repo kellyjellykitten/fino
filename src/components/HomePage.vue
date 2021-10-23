@@ -5,9 +5,9 @@
         <p class="lead text-muted">
           Eclipse rules, Aleppo drools. She is the best bunny. Of all the bunnies.
         </p>
-        <p>
+        <!-- <p>
           <a href="#" class="btn btn-primary my-2">Button maybe</a>
-        </p>
+        </p> -->
     </div>
   </section>
   <ImageFeed />

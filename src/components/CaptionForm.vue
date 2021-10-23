@@ -60,7 +60,12 @@ export default {
             if (res.status == 200) {
                 this.$emit('captionAdded')
             }
-            this.caption = {}
+            this.caption = {
+                id: null,
+                body: '',
+                image_id: this.image.id,
+                published: false
+            }
         }
     }
 }

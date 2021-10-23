@@ -2,7 +2,7 @@
   <div class="jumbotron text-center">
     <div class="container">
       <h1 class="display-4">About</h1>
-      <img src="https://i.ibb.co/mhMYdCY/20200726-141653.jpg" class="img-fluid rounded" alt="eclipse">
+      <img src="https://i.ibb.co/mhMYdCY/20200726-141653.jpg" class="eclipse" alt="eclipse">
     </div>
   </div>
   <div class="container ">
@@ -23,4 +23,12 @@ export default {
 
 <style>
   /* body {background-color: #e9ecef;} */
+  .eclipse {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 55%;
+    max-width: 100%;
+    height: auto;
+}
 </style>

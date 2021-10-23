@@ -21,6 +21,6 @@ module.exports = function(app) {
       ],
       controller.register
     );
-  
-    app.post("/api/auth/signin", controller.signin);
+    
+    app.post("/api/auth/signin", controller.signin)
   };
