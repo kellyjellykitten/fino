@@ -60,7 +60,14 @@ export default {
       console.log('condition', res.status == 200)
       if (res.status == 200) {
         console.log('User created successfully')
+        let payload = {
+          'user': this.register.name,
+          'token': res.data.accessToken
+        }
+        this.$store.dispatch('auth/register', payload)
         this.$router.push("/")
+      } else if (res.status == 400) {
+        this.$store.dispatch('auth/error')
       }
     }
   }

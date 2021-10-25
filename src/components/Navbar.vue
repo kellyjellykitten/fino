@@ -23,6 +23,9 @@
         <li class="nav-item">
           <router-link :to="{ name: 'login' }" class="nav-link">Login</router-link>
         </li>
+        <li class="nav-item" v-if="isLoggedIn">
+          <router-link @click="logout" class="nav-link">Logout</router-link>
+        </li>
         <li class="nav-item">
           <router-link :to="{ name: 'register' }" class="nav-link">Register</router-link>
         </li>
@@ -36,7 +39,20 @@
 
 <script>
 export default {
-    name: 'Navbar'
+    name: 'Navbar',
+    computed: {
+      isLoggedIn: function(){
+        return this.$store.getters.isLoggedIn
+      }
+    },
+    methods: {
+      logout: function(){
+        this.$store.dispatch('logout')
+        .then(() => {
+          this.$router.push('/login')
+        })
+      }
+    }
 }
 </script>
 

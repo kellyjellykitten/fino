@@ -18,13 +18,7 @@
         <input id="password" type="password" class="form-control" placeholder="Password" v-model="login.password" required>
         <p class="alert alert-danger" v-if="passwordError">{{ passwordError }}</p>
       </div>
-      <div class="checkbox mb-3">
-        <br/>
-        <label>
-          <input type="checkbox" value="remember-me">
-          Remember me
-        </label>
-      </div>
+      <br/>
       <div class="center-align">
         <br/>
         <button class="btn btn-log btn-primary btn-block" type="submit">Log in</button>
@@ -69,17 +63,22 @@ export default {
         console.log('condition', res.status == 200)
         if (res.status == 200) {
           console.log('Logged in successfully')
-          let payload = {'user': res}
-          this.$store.dispatch('login', payload)
+          let payload = {
+            'user': this.login.name,
+            'token': res.data.accessToken
+          }
+          this.$store.dispatch('auth/login', payload)
           this.$router.push("/")
         } else if (res.status == 404) {
           console.log('Unauthorized', res)
           console.log('msg', JSON.stringify(res.data.message))
           this.userError = JSON.stringify(res.data.message)
+          this.$store.dispatch('auth/error')
         } else if (res.status == 401) {
           console.log('Password unauthorized', res)
           console.log('pw msg', JSON.stringify(res.data.message))
           this.passwordError = JSON.stringify(res.data.message)
+          this.$store.dispatch('auth/error')
         }
       }))
        console.log('res', res)
