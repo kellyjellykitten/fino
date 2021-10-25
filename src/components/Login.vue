@@ -69,6 +69,8 @@ export default {
         console.log('condition', res.status == 200)
         if (res.status == 200) {
           console.log('Logged in successfully')
+          let payload = {'user': res}
+          this.$store.dispatch('login', payload)
           this.$router.push("/")
         } else if (res.status == 404) {
           console.log('Unauthorized', res)
