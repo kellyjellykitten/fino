@@ -43,3 +43,9 @@ export const auth = {
       authStatus: state => state.status
   }
 };
+
+//getters not being used
+//login action needs localStorage.setItem with token to persist
+//or localStorage.setItem('user', JSON.stringify(response.data))
+//getters: isLoggedIn: state => {return state.isLoggedIn}
+//then on nav: computed: {isLoggedIn() {return this.$store.getters.isLoggedIn}}

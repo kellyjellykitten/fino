@@ -1,38 +1,26 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Caption Contest</a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarText"
-      aria-controls="navbarText"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarText">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <router-link :to="{ name: 'home' }" class="nav-link">
-            Home
-            <span class="sr-only">(current)</span>
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link :to="{ name: 'login' }" class="nav-link">Login</router-link>
-        </li>
-        <li class="nav-item" v-if="isLoggedIn">
-          <router-link @click="logout" class="nav-link">Logout</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link :to="{ name: 'register' }" class="nav-link">Register</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link :to="{ name: 'about' }" class="nav-link">About</router-link>
-        </li>
-      </ul>
+    <div class="navbar-nav mr-auto" id="navbarText">
+      <li class="nav-item">
+        <router-link :to="{ name: 'home' }" class="nav-link">Home</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link :to="{ name: 'about' }" class="nav-link">About</router-link>
+      </li>
+    </div>
+    <div v-if="!isLoggedIn" class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <router-link :to="{ name: 'login' }" class="nav-link">Login</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link :to="{ name: 'register' }" class="nav-link">Register</router-link>
+      </li>
+    </div>
+    <div v-if="isLoggedIn" class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" @click.prevent="logout">Logout</a>
+      </li>
     </div>
   </nav>
 </template>
@@ -42,19 +30,20 @@ export default {
     name: 'Navbar',
     computed: {
       isLoggedIn() {
-        return this.$store.getters.isLoggedIn
+        return this.$store.state.auth.user;
       }
     },
     methods: {
       logout() {
-        this.$store.dispatch('logout')
-        .then(() => {
-          this.$router.push('/login')
-        })
+        this.$store.dispatch('auth/logout');
+        this.$router.push('/login')
       }
     }
 }
 </script>
 
-<style>
+<style type="text/css">
+  a:hover {
+    cursor: pointer;
+  }
 </style>
