@@ -68,7 +68,7 @@ export default {
             'token': res.data.accessToken
           }
           this.$store.dispatch('auth/login', payload)
-          this.$router.push("/")
+          .then(() => this.$router.push("/"))
         } else if (res.status == 404) {
           console.log('Unauthorized', res)
           console.log('msg', JSON.stringify(res.data.message))
@@ -81,7 +81,7 @@ export default {
           this.$store.dispatch('auth/error')
         }
       }))
-       console.log('res', res)
+        console.log('res', res)
     }
   }
 }

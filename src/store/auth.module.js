@@ -30,6 +30,7 @@ export const auth = {
     },
     authFailure(state) {
       state.status.loggedIn = false;
+      state.user - null;
     },
     logout(state) {
       state.status.loggedIn = false;
