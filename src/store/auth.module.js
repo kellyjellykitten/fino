@@ -1,6 +1,6 @@
-const user = JSON.parse(localStorage.getItem('user'));
+const user = localStorage.getItem('user');
 const initialState = user
-  ? { status: { loggedIn: true }, user: null, token: localStorage.getItem('token') || '' }
+  ? { status: { loggedIn: true }, user: user, token: localStorage.getItem('token') || '' }
   : { status: { loggedIn: false }, user: null, token: '' };
 
 export const auth = {
@@ -10,6 +10,13 @@ export const auth = {
       login({ commit }, user) {
           console.log(user.user)
           commit('authSuccess', {token: user.token, user: user.user})
+          return new Promise(resolve => {
+            setTimeout(() => {
+              localStorage.setItem("token", user.token);
+              localStorage.setItem("user", user.user);
+              resolve();
+            }, 1000);
+          });
       },
       register({ commit }, user) {
           commit('authSuccess', user)
@@ -44,8 +51,3 @@ export const auth = {
   }
 };
 
-//getters not being used
-//login action needs localStorage.setItem with token to persist
-//or localStorage.setItem('user', JSON.stringify(response.data))
-//getters: isLoggedIn: state => {return state.isLoggedIn}
-//then on nav: computed: {isLoggedIn() {return this.$store.getters.isLoggedIn}}

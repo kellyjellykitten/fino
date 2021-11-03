@@ -66,10 +66,15 @@ export default {
                 mode: 'cors'
             })
         const data = await res.json()
+        let payload = {
+            'images': data,
+        }
+        this.$store.dispatch('img/loadImages', payload)
         return data
     }
   },
   async created() {
+      //check if already have image dont make request to get image. instead get from localstorage or vuex
       this.images = await this.getImages()
   },
 };
