@@ -1,4 +1,5 @@
 const images = localStorage.getItem('images');
+console.log(JSON.parse(images))
 const initialState = images
   ? { status: { imagesLoaded: true }, images: images}
   : { status: { imagesLoaded: false }, images: [] };

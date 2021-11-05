@@ -63,8 +63,13 @@ export default {
         }   
     },
     async created() {
-        this.singleImage = JSON.parse(this.image)
-        this.captions = await this.fetchCaption(this.singleImage.id)
+        let storeImages = JSON.parse(this.$store.state.img.images)
+        storeImages = storeImages["images"]
+        console.log('store images', storeImages)
+        console.log('router', this.$router.currentRoute.value.params["id"])
+        this.singleImage = storeImages[this.$router.currentRoute.value.params["id"]]
+        console.log('single image', this.singleImage)
+        this.captions = await this.fetchCaption(this.singleImage["id"])
     },
 }
 </script>

@@ -74,8 +74,14 @@ export default {
     }
   },
   async created() {
-      //check if already have image dont make request to get image. instead get from localstorage or vuex
-      this.images = await this.getImages()
+      let storeImages = JSON.parse(this.$store.state.img.images)
+      storeImages = storeImages["images"]
+      if (storeImages == []) {
+          console.log('about to req')
+          this.images = await this.getImages()
+      } else {
+          this.images = storeImages
+      }
   },
 };
 </script>
