@@ -14,7 +14,7 @@ const { Caption } = model;
 exports.addCaption = (req, res) => {
     console.log('adding caption', req.body)
     Caption.create({
-        user_id: req.body.user_id,
+        user_name: req.body.user_name,
         body: req.body.body,
         image_id: req.body.image_id
     })

@@ -8,7 +8,17 @@
                 <img :src="singleImage.url" class="img-fluid">
             </div>
             <Captions :captions="captions" />
-            <CaptionForm  :image="singleImage" @caption-added="this.refreshCaptions(singleImage.id)" />
+            <div v-if="isLoggedIn">
+                <CaptionForm
+                    :image="singleImage"
+                    @caption-added="this.refreshCaptions(singleImage.id)"
+                />
+            </div>
+            <div v-if="!isLoggedIn" class="py-5 text-center">
+                <h3>
+                    Sign in to add a caption!
+                </h3>
+            </div>
         </div>
     </div>
 </template>
@@ -24,12 +34,17 @@ export default {
         CaptionForm
     },
     props: {
-        image: String,
+        image: String
     },
     data() {
         return {
             singleImage: {},
-            captions: []
+            captions: [],
+        }
+    },
+    computed: {
+        isLoggedIn() {
+            return this.$store.state.auth.user
         }
     },
     methods: {

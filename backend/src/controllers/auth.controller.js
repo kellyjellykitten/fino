@@ -17,8 +17,18 @@ exports.register = (req, res) => {
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8)
     })
-        .then(() => {
-            res.send({ message: "User created successfully" })
+        .then((user) => {
+            // res.send({ message: "User created successfully" })
+            var token = jwt.sign({ id: user.id }, config.secret, {
+                expiresIn: 86400 //24 hours
+            })
+            res.status(200).send({
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                accessToken: token,
+                message: "User created successfully"
+            });
         })
         .catch(err => {
             res.status(500).send({ message: err.message });

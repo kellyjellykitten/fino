@@ -77,7 +77,7 @@ export default {
       let storeImages = JSON.parse(this.$store.state.img.images)
       storeImages = storeImages["images"]
       if (storeImages == []) {
-          console.log('about to req')
+        //   console.log('about to req')
           this.images = await this.getImages()
       } else {
           this.images = storeImages

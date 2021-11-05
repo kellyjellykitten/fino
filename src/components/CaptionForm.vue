@@ -15,7 +15,7 @@
             <input
                 type="submit"
                 value="Submit Caption"
-                class="btn btn-block"
+                class="btn btn-success btn-lg col-3 my-3"
             />
         </form>
     </div>
@@ -33,6 +33,7 @@ export default {
                 id: null,
                 body: '',
                 image_id: this.image.id,
+                user_name: this.$store.state.auth.user,
                 published: false
             },
             submitted: false
@@ -64,6 +65,7 @@ export default {
                 id: null,
                 body: '',
                 image_id: this.image.id,
+                user_name: this.$store.state.auth.user,
                 published: false
             }
         }

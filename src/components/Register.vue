@@ -55,20 +55,25 @@ export default {
         body: JSON.stringify(this.register)
       }
       const res = await fetch(`http://localhost:5000/api/auth/register`, requestOptions)
-      console.log('res', res)
-      console.log('json', res.json())
-      console.log('condition', res.status == 200)
-      if (res.status == 200) {
-        console.log('User created successfully')
-        let payload = {
-          'user': this.register.name,
-          'token': res.data.accessToken
+      .then(res => res.json().then(data => ({
+        data: data,
+        status: res.status
+      })).then(res => {
+        console.log('res', res)
+        console.log('condition', res.status == 200)
+        if (res.status == 200) {
+          console.log('Registered successfully')
+          let payload = {
+            'user': this.register.name,
+            'token': res.data.accessToken
+          }
+          this.$store.dispatch('auth/login', payload)
+          .then(() => this.$router.push("/"))
+        } else if (res.status == 400) {
+          this.$store.dispatch('auth/error')
         }
-        this.$store.dispatch('auth/register', payload)
-        this.$router.push("/")
-      } else if (res.status == 400) {
-        this.$store.dispatch('auth/error')
-      }
+      }))
+      console.log('res', res)
     }
   }
 }

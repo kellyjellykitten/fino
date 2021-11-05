@@ -19,7 +19,14 @@ export const auth = {
           });
       },
       register({ commit }, user) {
-          commit('authSuccess', user)
+          commit('authSuccess', {token: user.token, user: user.user})
+          return new Promise(resolve => {
+            setTimeout(() => {
+              localStorage.setItem("token", user.token);
+              localStorage.setItem("user", user.user);
+              resolve();
+            }, 1000);
+          });
       },
       logout({ commit }) {
           commit('logout')
@@ -33,11 +40,13 @@ export const auth = {
       state.status.loggedIn = true;
       state.token = token;
       state.user = user;
-      console.log('mut', user)
+      state.showCaptionForm = true;
+      console.log('mut', user),
+      console.log('token', token)
     },
     authFailure(state) {
       state.status.loggedIn = false;
-      state.user - null;
+      state.user = null;
     },
     logout(state) {
       state.status.loggedIn = false;
