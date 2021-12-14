@@ -15,15 +15,34 @@ module.exports = (sequelize, DataTypes) => {
       this.userName =  this.belongsTo(models.User, {
         foreignKey: 'user_name'
       })
+      // this.userId = this.belongsTo(models.User, {
+      //   foreignKey: 'user_id'
+      // })
     }
   }
   Caption.init({
     user_name: DataTypes.STRING,
     body: DataTypes.STRING,
-    image_id: DataTypes.INTEGER
+    image_id: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Caption',
   });
   return Caption;
 };
+
+
+
+
+
+// userName: {
+//   type: DataTypes.STRING,
+//   references: {
+//     model: 'Users',
+//     key: 'name'
+//   }
+// userId: {
+//   type: DataTypes.INTEGER,
+//   references: 'Users',
+//   key: 'id'
+// }

@@ -2,16 +2,17 @@
   <div class="jumbotron text-center">
     <div class="container">
       <h1 class="display-4">About</h1>
-      <img src="https://i.ibb.co/mhMYdCY/20200726-141653.jpg" class="eclipse" alt="eclipse">
+      <br>
+      <img src="https://i.ibb.co/mhMYdCY/20200726-141653.jpg" class="eclipse" title="My older cat, Eclipse" alt="eclipse">
     </div>
   </div>
-  <div class="container ">
+  <div class="container">
     <p class="lead text-center">
-      Eclipse is a cute cat from humble beginnings. Adopted into a forever home at the wispy age of 6, Eclipse developed hunting skills as a child to provide for her impoverished family in western Ohio.
-      At 15, she won a shooting contest against experienced marksman Frank E. Butler, whom she later married.
-      The pair joined Buffalo Bill in 1885, performing in Europe before royalty and other heads of state. Audiences were astounded to see her shooting out a cigar from her husband's lips or splitting a playing-card edge-on at 30 paces, and she earned more than anyone except Buffalo Bill himself.
-      After a bad rail accident in 1901, she had to settle for a less taxing routine, and toured in a play written about her career, as well as instructing women in marksmanship, believing strongly in female self-defense.
+      Built using Vue.js, this Caption Contest website allows users to register for an account and submit captions to various stock photos.
+      The back-end utilizes Node.js + Express and Sequelize, with PostgreSQL serving as the database. The front-end makes different API calls to post and get user, caption, and image data. Users are registered and authenticated using JWT authentication, with password encrpytion through BCrypt.
     </p>
+    <br>
+    <a class="about" title="GitHub Source Code" target="_blank" href="https://github.com/kellyjellykitten/fino">View Source Code</a>
   </div>
 </template>
 
@@ -27,8 +28,12 @@ export default {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 55%;
+    width: 40%;
     max-width: 100%;
     height: auto;
-}
+  }
+  a.about {
+    display: block;
+    text-align: center;
+  }
 </style>

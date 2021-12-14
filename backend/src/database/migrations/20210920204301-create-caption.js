@@ -10,7 +10,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       user_name: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       body: {
         type: Sequelize.STRING
@@ -25,10 +25,17 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Captions');
   }
 };
+
+
+// references: {
+//   model: 'Users',
+//   key: 'name',
+//   allowNull: false
+// }

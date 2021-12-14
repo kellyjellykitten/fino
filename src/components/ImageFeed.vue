@@ -74,12 +74,11 @@ export default {
     }
   },
   async created() {
-      let storeImages = JSON.parse(this.$store.state.img.images)
-      storeImages = storeImages["images"]
-      if (storeImages == []) {
-        //   console.log('about to req')
+      if (this.$store.state.img.images == []) {
           this.images = await this.getImages()
       } else {
+          let storeImages = JSON.parse(this.$store.state.img.images)
+          storeImages = storeImages["images"]
           this.images = storeImages
       }
   },
