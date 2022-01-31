@@ -7,15 +7,20 @@
 
   <div class="login-box">
     <h4 class="text-center mb-5">Create an account to add your own captions!</h4>
+    <p class="alert alert-danger" v-if="userError">{{ userError }}</p>
+    <p class="alert alert-danger" v-if="emailError">{{ emailError }}</p>
+    <p class="alert alert-danger" v-if="invalidError">{{ invalidError }}</p>
     <form class="form-group" @submit="registerUser">
       <div class="input-field">
         <label for="name">Username</label>
         <input id="name" type="text" class="form-control" placeholder="Username" v-model="register.name" required autofocus>
+        
       </div>
       <div class="input-field">
         <br/>
         <label for="email">Email address</label>
         <input id="email" type="text" class="form-control" placeholder="Email address" v-model="register.email" required>
+        
       </div>
       <div class="input-field">
         <br/>
@@ -42,7 +47,10 @@ export default {
           name: '',
           email: '',
           password: ''
-        }
+        },
+        emailError: null,
+        userError: null,
+        invalidError: null,
       }
     },
     methods: {
@@ -54,6 +62,7 @@ export default {
         mode: 'cors',
         body: JSON.stringify(this.register)
       }
+      console.log('req options', requestOptions)
       const res = await fetch(`http://localhost:5000/api/auth/register`, requestOptions)
       .then(res => res.json().then(data => ({
         data: data,
@@ -70,6 +79,19 @@ export default {
           this.$store.dispatch('auth/login', payload)
           .then(() => this.$router.push("/"))
         } else if (res.status == 400) {
+          console.log('Username in use', res)
+          console.log('msg', JSON.stringify(res.data.message))
+          this.userError = JSON.stringify(res.data.message)
+          this.$store.dispatch('auth/error')
+        } else if (res.status == 400) {
+          console.log('Email in use', res)
+          console.log('msg', JSON.stringify(res.data.message))
+          this.emailError = JSON.stringify(res.data.message)
+          this.$store.dispatch('auth/error')
+        } else if (res.status == 500) {
+          console.log('Invalid email', res)
+          console.log('msg', JSON.stringify(res.data.message))
+          this.invalidError = JSON.stringify(res.data.message)
           this.$store.dispatch('auth/error')
         }
       }))

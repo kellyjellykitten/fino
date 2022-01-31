@@ -53,6 +53,7 @@ export default {
         mode: 'cors',
         body: JSON.stringify(this.login)
       }
+      console.log('req options', requestOptions)
       const res = await fetch(`http://localhost:5000/api/auth/signin`, requestOptions)
       .then(res => res.json().then(data => ({
         data: data,

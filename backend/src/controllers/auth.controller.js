@@ -18,7 +18,19 @@ exports.register = (req, res) => {
         password: bcrypt.hashSync(req.body.password, 8)
     })
         .then((user) => {
-            // res.send({ message: "User created successfully" })
+
+            // const userData = 'SELECT * FROM "Users" WHERE name = $1'
+            // const userArr = userData.rows
+            // if (userArr.length != 0) {
+            //     return res.status(400).send({ message: "Username already in use" })
+            // }
+
+            // const emailData = 'SELECT * FROM "Users" WHERE email = $1'
+            // const emailArr = emailData.rows
+            // if (emailArr.length !=0) {
+            //     return res.status(400).send({ message: "Email already in use" })
+            // }
+
             var token = jwt.sign({ id: user.id }, config.secret, {
                 expiresIn: 86400 //24 hours
             })
